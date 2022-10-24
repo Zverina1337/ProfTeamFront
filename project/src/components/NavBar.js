@@ -1,9 +1,13 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {Navbar, Container, Nav} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
 import { BASKET_ROUTE, LOGIN_ROUTE, ORDERS_ROUTE, SHOP_ROUTE } from './../utils/consts';
+import { Context } from './../index';
+import {observer} from 'mobx-react-lite';
 
 const NavBar = () => {
+    const {user} = useContext(Context)
+
     return (
         <Navbar bg="dark" variant="dark">
             <Container>
@@ -18,7 +22,11 @@ const NavBar = () => {
                         <Link to={ORDERS_ROUTE} style={{textDecoration:"none",color:"white"}}>Оформленные заказы</Link>
                     </Nav.Link>
                     <Nav.Link>
-                        <Link to={LOGIN_ROUTE} style={{textDecoration:"none",color:"white"}}>Войти</Link>
+                        {user.isAuth ?
+                            <Link to={SHOP_ROUTE} style={{textDecoration:"none",color:"white"}} onClick={() => user.setIsAuth(false)}>Выйти из аккаунта</Link>
+                            :
+                            <Link to={LOGIN_ROUTE} style={{textDecoration:"none",color:"white"}}>Войти</Link>
+                        }
                     </Nav.Link>
                 </Nav>
             </Container>
@@ -26,4 +34,4 @@ const NavBar = () => {
     );
 }
 
-export default NavBar;
+export default observer(NavBar);
