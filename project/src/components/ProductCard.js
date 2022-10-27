@@ -2,15 +2,16 @@ import React,{useContext} from 'react';
 import {Card, Button} from 'react-bootstrap';
 import { Context } from './../index';
 import {observer} from 'mobx-react-lite';
+import { addToCart } from '../http/productAPI';
+import { useLocation } from 'react-router-dom';
 
 const ProductCard = ({id, name, desc, price, img}) => {
     const {user} = useContext(Context)
-
+    const location = useLocation();
+    if(user.isAuth)
     return (
         <Card style={{ width: '18rem' , margin: '20px'}}>
-            <Card.Img variant="top" src={img} />
-            <hr/>
-        <Card.Body>
+        <Card.Body className='mt-3'>
             <Card.Title>{name}</Card.Title>
         <Card.Text>
             {desc}
@@ -19,8 +20,8 @@ const ProductCard = ({id, name, desc, price, img}) => {
         <Card.Text>
             Цена: <span style={{fontWeight: 'bold'}}>{price}</span>
         </Card.Text>
-            {user.isAuth &&
-                <Button variant={'outline-dark'} className='m-2'>Добавить в корзину</Button>
+            {
+                <Button variant={'outline-dark'} className='m-2' onClick={() => addToCart(id).then(data => console.log(data))}>Добавить в корзину</Button>
             }
         </Card.Body>
     </Card>

@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom'
 import { BASKET_ROUTE, LOGIN_ROUTE, ORDERS_ROUTE, SHOP_ROUTE } from './../utils/consts';
 import { Context } from './../index';
 import {observer} from 'mobx-react-lite';
+import { logout } from './../http/userAPI';
 
 const NavBar = () => {
     const {user} = useContext(Context)
@@ -23,7 +24,7 @@ const NavBar = () => {
                     </Nav.Link>
                     <Nav.Link>
                         {user.isAuth ?
-                            <Link to={SHOP_ROUTE} style={{textDecoration:"none",color:"white"}} onClick={() => user.setIsAuth(false)}>Выйти из аккаунта</Link>
+                            <Link to={SHOP_ROUTE} style={{textDecoration:"none",color:"white"}} onClick={() => {user.setIsAuth(false); user.setUser({}); logout()}}>Выйти из аккаунта</Link>
                             :
                             <Link to={LOGIN_ROUTE} style={{textDecoration:"none",color:"white"}}>Войти</Link>
                         }
