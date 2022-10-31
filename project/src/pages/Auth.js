@@ -17,6 +17,9 @@ const Auth = () => {
     const [fio, setFio] = useState('')
     const [showError, setShowError] = useState(false)
     const [error, setError] = useState('')
+    const [passwordError, setPasswordError] = useState(false)
+    const [emailError, setEmailError] = useState(false)
+    const [fioError, setFioError] = useState(false)
     const navigate = useNavigate()
 
     const click = async () => {
@@ -31,9 +34,15 @@ const Auth = () => {
             user.setIsAuth(true)
             navigate(SHOP_ROUTE)
         }catch(e){
-            console.log(e)
             setShowError(true)
             setError(e.response?.data.error)
+            if(e.response?.data.error?.errors?.password){
+                setPasswordError(true)
+            }else if(e.response?.data.error?.errors?.email){
+                setEmailError(true)
+            }else if(e.response?.data.error?.errors?.fio){
+                setFioError(true)
+            }
         }
         
     }
@@ -54,16 +63,28 @@ const Auth = () => {
                 {!isLogin &&
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label>ФИО</Form.Label>
-                        <Form.Control type="text" placeholder="Введите ФИО" value={fio} onChange={e => setFio(e.target.value)} border={'danger'}/>
+                        { fioError ?
+                            <Form.Control type="text" placeholder="Введите ФИО" value={fio} onChange={e => setFio(e.target.value)} style={{border: "1px solid red"}}/>
+                            :
+                            <Form.Control type="text" placeholder="Введите ФИО" value={fio} onChange={e => setFio(e.target.value)}/>
+                        }
                     </Form.Group>
                 }
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label>Email</Form.Label>
-                        <Form.Control type="email" placeholder="Введите email" value={email} onChange={e => setEmail(e.target.value)}/>
+                        { emailError ?
+                            <Form.Control type="email" placeholder="Введите email" value={email} onChange={e => setEmail(e.target.value)} style={{border: "1px solid red"}}/>
+                            :
+                            <Form.Control type="email" placeholder="Введите email" value={email} onChange={e => setEmail(e.target.value)} />
+                        }
                     </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicPassword">
-                    <Form.Label>Пароль</Form.Label>
-                    <Form.Control type="password" placeholder="Пароль" value={password} onChange={e => setPassword(e.target.value)}/>
+                        <Form.Label>Пароль</Form.Label>
+                        { passwordError ? 
+                            <Form.Control type="password" placeholder="Пароль" value={password} onChange={e => setPassword(e.target.value)} style={{border: "1px solid red"}}/>
+                            :
+                            <Form.Control type="password" placeholder="Пароль" value={password} onChange={e => setPassword(e.target.value)}/>
+                        }
                 </Form.Group>
                 <Form.Group>
                     {isLogin ?

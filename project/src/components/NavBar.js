@@ -11,25 +11,29 @@ const NavBar = () => {
 
     return (
         <Navbar bg="dark" variant="dark">
-            <Container>
-                <Navbar.Brand>
-                    <Link to={SHOP_ROUTE} style={{textDecoration:"none",color:"white"}}>Просто купить</Link>
-                </Navbar.Brand>
-                <Nav className="me-auto">
+            <Container style={{flexDirection: "row-reverse"}}>
+                <Nav>
                     <Nav.Link>
+                    {user.isAuth &&
                         <Link to={BASKET_ROUTE} style={{textDecoration:"none",color:"white"}}>Корзина</Link>
+                    }
                     </Nav.Link>
                     <Nav.Link>
+                    {user.isAuth &&
                         <Link to={ORDERS_ROUTE} style={{textDecoration:"none",color:"white"}}>Оформленные заказы</Link>
+                    }   
                     </Nav.Link>
                     <Nav.Link>
                         {user.isAuth ?
                             <Link to={SHOP_ROUTE} style={{textDecoration:"none",color:"white"}} onClick={() => {user.setIsAuth(false); user.setUser({}); logout()}}>Выйти из аккаунта</Link>
                             :
-                            <Link to={LOGIN_ROUTE} style={{textDecoration:"none",color:"white"}}>Войти</Link>
+                            <Link to={LOGIN_ROUTE} style={{textDecoration:"none", color:"white"}}>Войти в аккаунт</Link>
                         }
                     </Nav.Link>
                 </Nav>
+                <Navbar.Brand>
+                    <Link to={SHOP_ROUTE} style={{textDecoration:"none",color:"white"}}>Просто купить</Link>
+                </Navbar.Brand>
             </Container>
         </Navbar>
     );
